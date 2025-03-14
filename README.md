@@ -43,6 +43,22 @@ The `navtask` determines Romi’s path through the maze using feedback from the 
 
 Key methods in `navtask` include `update_yaw()`, which determines Romi’s heading relative to its starting position; `update_all()`, which tracks the average encoder position change to measure movement; `check_target()`, which verifies if Romi has reached its designated checkpoint; and `new_target()`, which updates Romi’s next target upon reaching the current one.
 
+The navigation system consists of the following states:
+
+- **S0 Wait:** Stationary, waiting for calibration, a base effort, and `Run` to be set.
+- **S1 Start:** Establishes an absolute heading reference and checks `Psat` to see if Romi has reached CP0.
+- **S2 CP0:** Pivots toward checkpoint 1 and then drives the distance determined between the points set in the navigation.
+- **S3 CP1:** Line follows to checkpoint 2, checking `Psat` and the heading.
+- **S4 CP2:** Pivots toward an arbitrary point on the line between CP2 and CP3 and drives forward, hitting the first cup.
+- **S5 -5s1:** Line follows to checkpoint 3, checking for a rise in `Psat`.
+- **S6 CP3:** Adjusts heading and drives straight toward checkpoint 4.
+- **S7 CP4:** Adjusts heading and drives straight toward the intermediate point.
+- **S8 INT:** Adjusts heading and drives straight toward checkpoint 5.
+- **S9 CP5:** Returns to line following, checking `bmp` to detect wall impact.
+- **S10 BMP:** Adjusts heading and drives straight toward the second cup.
+- **S11 -5s2:** Adjusts heading and drives straight toward the final checkpoint before the finish line.
+- **S12 Finish:** Completes the final segment of the maze and returns to the finish line.
+
 ### User Task
 
 The `usertask` manages user input, allowing calibration, effort setting, and start/stop commands via Bluetooth. It consists of four states: calibrating black, calibrating white, setting motor effort, and waiting for task completion.
@@ -62,6 +78,5 @@ The `controllertask` implements cascaded PID control for chassis movement. It op
 ## Conclusion
 
 The Mecha-01 Romi Term Project integrated multiple engineering and computer science disciplines, including dynamics, embedded systems, and control theory. As well as strengthening our skills in the mechanical side of the project like mounting all the sensors properly within the space constraints Romi poses. Through hard work and endless hours spent on hardware and software development, we successfully created an autonomous Romi capable of navigating as quickly and efficiently as possible. This project reinforced our understanding of robotics and provided valuable experience in time management, project planning, software and sensor integration, task scheduling, and control as well as countless other things. Future enhancements for Romi could focus on improving obstacle avoidance especially in the 80-20, fine-tuning the PID controller, and optimizing Romi’s navigation speed for different portions of the track instead of using a base speed for the entire course.
-
 
 
